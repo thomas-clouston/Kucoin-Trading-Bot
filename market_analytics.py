@@ -43,8 +43,6 @@ def analyse_market(*arg):
                         # Pulling candle data
                         candle_data = market_client.get_kline_data(trading_pair, candle_interval, seconds)
                         closing_price = candle_data[-1][4]
-                        highest_price = candle_data[0][2]
-                        lowest_price = candle_data[0][3]
                         opening_price = candle_data[0][1]
 
                         trend = ((closing_price - opening_price) / opening_price) * 100
@@ -52,20 +50,7 @@ def analyse_market(*arg):
                         trends_list.append(trading_pair)
 
                         # Calculating gradient based on trend
-                        if trend > 0:
-                            for data in candle_data:
-                                if data[2] > highest_price:
-                                    highest_price = data[2]
-                            gradient = (highest_price - opening_price) / 23
-
-                        elif trend < 0:
-                            for data in candle_data:
-                                if data[3] < lowest_price:
-                                    lowest_price = data[3]
-                            gradient = (lowest_price - opening_price) / 23
-
-                        else:
-                            continue
+                        gradient = (closing_price - opening_price) / 23
 
                         variance_list = []
 
